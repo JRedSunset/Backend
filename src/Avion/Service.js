@@ -18,6 +18,16 @@ const Service = {
         });
     },
 
+    create: (codeAvion, modelo,asientos,idclase) => {
+        return new Promise((resolve, reject) => {
+            const query = 'INSERT INTO Avion VALUES(?,?,?,?)';
+            db.query(query, [codeAvion, modelo,asientos,idclase], (err, results) => {
+                if (err) reject(err);
+                else resolve(results);
+            });
+        });
+    },
+
     
 
 

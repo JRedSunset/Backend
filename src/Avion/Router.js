@@ -5,6 +5,7 @@ const AvionesRouter = express.Router();
 
 
 AvionesRouter.get('/aviones', Controller.getAll);
+AvionesRouter.post('/aviones', Controller.getAll);
 
 
 export default AvionesRouter;
