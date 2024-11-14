@@ -18,10 +18,10 @@ const Service = {
         });
     },
 
-    create: (codeAvion, modelo,asientos,idclase) => {
+    create: (modelo,asientos,idclase) => {
         return new Promise((resolve, reject) => {
-            const query = 'INSERT INTO Avion VALUES(?,?,?,?)';
-            db.query(query, [codeAvion, modelo,asientos,idclase], (err, results) => {
+            const query = 'INSERT INTO Avion(modelo,asientos,idclase) VALUES(?,?,?)';
+            db.query(query, [modelo,asientos,idclase], (err, results) => {
                 if (err) reject(err);
                 else resolve(results);
             });

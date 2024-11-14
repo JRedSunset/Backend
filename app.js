@@ -4,7 +4,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 
-import AvionesRouter from './src/Avion/Router.js';
+import AvionesRouter from './src/avion/Router.js';
+import UbicacionRouter from './src/ubicacion/Router.js';
 
 const app = express();
 const PORT = 4000;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', AvionesRouter);
+app.use('/api', UbicacionRouter);
 
 
 app.listen(PORT, (error) => {
