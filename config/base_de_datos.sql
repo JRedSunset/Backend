@@ -63,36 +63,37 @@ primary key(codereservacion)
 );
 
 
-INSERT INTO ubicacion(codigoAeropuerto, ciudad, Pais) VALUES
-('EZE', 'Buenos Aires', 'Argentina'),
-('AEP', 'Buenos Aires', 'Argentina'),
-('COR', 'Córdoba', 'Argentina'),
-('SCL', 'Santiago', 'Chile'),
-('BOG', 'Bogotá', 'Colombia'),
-('MDE', 'Medellín', 'Colombia'),
-('CTG', 'Cartagena', 'Colombia'),
-('LIM', 'Lima', 'Perú'),
-('CUZ', 'Cusco', 'Perú'),
-('MEX', 'Ciudad de México', 'México'),
-('CUN', 'Cancún', 'México'),
-('GDL', 'Guadalajara', 'México'),
+INSERT INTO ubicacion (codigoAeropuerto, ciudad, pais) VALUES
 ('PTY', 'Ciudad de Panamá', 'Panamá'),
-('GRU', 'São Paulo', 'Brasil'),
-('GIG', 'Río de Janeiro', 'Brasil'),
-('BSB', 'Brasilia', 'Brasil'),
-('UIO', 'Quito', 'Ecuador'),
-('GYE', 'Guayaquil', 'Ecuador'),
-('SJO', 'San José', 'Costa Rica'),
 ('SAL', 'San Salvador', 'El Salvador'),
-('GUA', 'Ciudad de Guatemala', 'Guatemala'),
-('MGA', 'Managua', 'Nicaragua'),
-('SAP', 'San Pedro Sula', 'Honduras'),
-('ASU', 'Asunción', 'Paraguay'),
-('MVD', 'Montevideo', 'Uruguay'),
-('SJU', 'San Juan', 'Puerto Rico'),
-('POS', 'Puerto España', 'Trinidad y Tobago'),
-('KIN', 'Kingston', 'Jamaica'),
-('SDQ', 'Santo Domingo', 'República Dominicana'),
-('PUJ', 'Punta Cana', 'República Dominicana'),
-('HAV', 'La Habana', 'Cuba'),
-('NAS', 'Nassau', 'Bahamas');
+('SJO', 'San José', 'Costa Rica'),
+('MEX', 'Ciudad de México', 'México'),
+('LIM', 'Lima', 'Perú');
+
+INSERT INTO ruta (codigoruta, codigosalida, codigodestino) VALUES
+('RUTA001', 'SAL', 'PTY'),
+('RUTA002', 'PTY', 'SJO'),
+('RUTA003', 'SJO', 'MEX'),
+('RUTA004', 'MEX', 'LIM'),
+('RUTA005', 'LIM', 'SAL');
+
+INSERT INTO avion (modelo, asientos, numerocolumnas, numerofilas) VALUES
+('Boeing 737', 180, 6, 30),
+('Airbus A320', 150, 6, 25),
+('Boeing 747', 416, 10, 42),
+('Embraer 190', 98, 4, 24),
+('Boeing 777', 396, 10, 40);
+
+INSERT INTO vuelo (codigoruta, estado, codeAvion, asientosrestante, fechasalida, fechallegada) VALUES
+('RUTA001', 'abordando', 1, 180, '2024-12-01 08:00:00', '2024-12-01 12:00:00'),
+('RUTA002', 'en espera', 2, 150, '2024-12-01 14:00:00', '2024-12-01 17:30:00'),
+('RUTA003', 'mantenimiento', 3, 416, '2024-12-02 09:00:00', '2024-12-02 15:00:00'),
+('RUTA004', 'vuelo', 4, 98, '2024-12-02 16:30:00', '2024-12-02 20:00:00'),
+('RUTA005', 'demorado', 5, 396, '2024-12-03 07:00:00', '2024-12-03 13:00:00');
+
+INSERT INTO reservacion (codevuelo, pasaporte, nombre, apellido, telefono, correo, precio, genero, estado) VALUES
+(1, 'A12345678', 'Carlos', 'Ramírez', '503 1234-5678', 'carlos@example.com', 250.00, TRUE, TRUE),
+(2, 'B87654321', 'Ana', 'López', '506 8765-4321', 'ana@example.com', 300.00, FALSE, TRUE),
+(3, 'C13579246', 'Luis', 'Gómez', '507 1357-9246', 'luis@example.com', 400.00, TRUE, FALSE),
+(4, 'D24681357', 'María', 'Pérez', '505 2468-1357', 'maria@example.com', 200.00, FALSE, TRUE),
+(5, 'E19283746', 'José', 'Martínez', '504 1928-3746', 'jose@example.com', 150.00, TRUE, FALSE);

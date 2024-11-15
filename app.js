@@ -8,6 +8,7 @@ import AvionesRouter from './src/avion/Router.js';
 import UbicacionRouter from './src/ubicacion/Router.js';
 import RutaRouter from './src/ruta/Router.js';
 import VueloRouter from './src/vuelo/Router.js';
+import ReservacionRouter from './src/reservacion/Router.js';
 
 const app = express();
 const PORT = 4000;
@@ -24,7 +25,7 @@ app.use('/api', AvionesRouter);
 app.use('/api', UbicacionRouter);
 app.use('/api', RutaRouter);
 app.use('/api', VueloRouter);
-
+app.use('/api', ReservacionRouter);
 
 app.listen(PORT, (error) => {
     if (!error) {
