@@ -1,100 +1,98 @@
-CREATE database testing;
-USE testing;
+-- Crear la base de datos
+CREATE DATABASE SistemaVuelos;
 
-CREATE TABLE Year (
-    year_id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
-    year_value YEAR NOT NULL
+-- Usar la base de datos recién creada
+USE SistemaVuelos;
+
+create table ubicacion(
+codigoAeropuerto varchar(15),
+ciudad varchar(30),
+Pais varchar(30),
+primary key(codigoAeropuerto)
 );
 
-CREATE TABLE Period (
-    period_id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT ,
-    period_name VARCHAR(50) NOT NULL,
-    year_id TINYINT UNSIGNED NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    FOREIGN KEY (year_id) REFERENCES Year(year_id)
+create table ruta (
+codigoruta varchar(15),
+codigosalida varchar(15), 
+codigodestino varchar(15), 
+foreign key(codigosalida) references ubicacion(codigoAeropuerto), -- se debe utilizar codigos diferentes de para salida y destino
+foreign key(codigodestino) references ubicacion(codigoAeropuerto),
+primary key(codigoruta)
 );
 
-CREATE TABLE Parcial (
-    parcial_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    period_id TINYINT UNSIGNED,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    FOREIGN KEY (period_id) REFERENCES Period(period_id)
+
+create table avion(
+codeAvion int auto_increment,
+modelo varchar(14),
+asientos int, -- capacidad
+numerocolumnas tinyint,
+numerofilas tinyint,
+primary key(codeAvion)
+);
+ 
+
+-- se puede decir que vuelo es una hija de ruta ya que se especifica la ruta de ese vuelo que tambien es el codigo del vuelo
+create table Vuelo(
+codevuelo int auto_increment,
+codigoruta varchar(15),
+estado varchar(14), -- abordando, desabordando, mantenimiento, vuelo, cancelado, demorado, finalizado, inactivo, en espera.
+codeAvion int, -- datos sobre los asientos
+asientosrestante smallint,
+fechasalida datetime,
+fechallegada datetime,
+foreign key(codeAvion) references avion(codeAvion),
+foreign key(codigoruta) references ruta(codigoruta),
+primary key(codevuelo)
 );
 
-CREATE TABLE Class (
-    class_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    class_code CHAR(7) UNIQUE NOT NULL ,
-    class_name VARCHAR(50) UNIQUE NOT NULL,
-    class_active BOOLEAN default true
+
+-- tomar en cuenta que si se cancela la reservacion el asiento debe cambiarse a disponible
+create table reservacion(
+codereservacion int auto_increment,
+codevuelo int,
+pasaporte varchar(10),
+nombre varchar(25),
+apellido varchar(25),
+telefono varchar(15), -- 504 9463-6395
+correo varchar(30),
+precio double,
+genero boolean, -- true is MAN false is Women
+estado boolean,  -- true aprobado -- false no aprobado  
+foreign key(codevuelo) references vuelo(codevuelo),
+primary key(codereservacion)
 );
 
-CREATE TABLE Section (
-    section_id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    section_name VARCHAR(10) NOT NULL UNIQUE
-);
 
-CREATE TABLE Teacher (
-    teacher_id SMALLINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    teacher_name VARCHAR(100) NOT NULL UNIQUE,
-    teacher_email VARCHAR(50),
-    teacher_active boolean default true
-);
-
-CREATE TABLE Career (
-    career_id TINYINT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    career_name VARCHAR(100) NOT NULL UNIQUE,
-    career_active boolean default true
-);
-
-CREATE TABLE TeacherCareer (
-    teacher_id SMALLINT UNSIGNED,
-    career_id TINYINT UNSIGNED,
-    PRIMARY KEY (teacher_id, career_id),
-    FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id),
-    FOREIGN KEY (career_id) REFERENCES Career(career_id)
-);
-
-CREATE TABLE ClassSchedule (
-    schedule_id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-    teacher_id SMALLINT UNSIGNED,
-    teacher_name VARCHAR(100) NOT NULL,
-    class_id SMALLINT UNSIGNED,
-    class_name VARCHAR(50) NOT NULL,
-    section_id TINYINT UNSIGNED,
-    section_name VARCHAR(10) NOT NULL,
-    parcial_id SMALLINT UNSIGNED,
-	parcial_name VARCHAR(50) NOT NULL,
-    period_name VARCHAR(50) NOT NULL,
-    year_name YEAR NOT NULL, 
-    FOREIGN KEY (teacher_id) REFERENCES Teacher(teacher_id),
-    FOREIGN KEY (class_id) REFERENCES Class(class_id),
-    FOREIGN KEY (section_id) REFERENCES Section(section_id),
-    FOREIGN KEY (parcial_id) REFERENCES Parcial(parcial_id)
-);
-
-/*Replace the responsible_rol from a varchar to an FK*/
-CREATE TABLE Responsible (
-    responsible_id TINYINT PRIMARY KEY AUTO_INCREMENT,
-    responsible_name VARCHAR(100) NOT NULL,
-    responsible_rol VARCHAR(50),
-    responsible_active boolean default true
-);
-
-CREATE TABLE GradesReport (
-    report_id INT PRIMARY KEY AUTO_INCREMENT,
-    schedule_id INT UNSIGNED,
-    status_id boolean default false,
-    status_date DATE,
-    responsible_id TINYINT,
-    comments TEXT,
-    FOREIGN KEY (schedule_id) REFERENCES ClassSchedule(schedule_id),
-    FOREIGN KEY (responsible_id) REFERENCES Responsible(responsible_id)
-);
-
-CREATE TABLE Classroom (
-	classroom_id TINYINT PRIMARY KEY AUTO_INCREMENT,
-    classroom_name VARCHAR(15) NOT NULL UNIQUE
-);
-
+INSERT INTO ubicacion(codigoAeropuerto, ciudad, Pais) VALUES
+('EZE', 'Buenos Aires', 'Argentina'),
+('AEP', 'Buenos Aires', 'Argentina'),
+('COR', 'Córdoba', 'Argentina'),
+('SCL', 'Santiago', 'Chile'),
+('BOG', 'Bogotá', 'Colombia'),
+('MDE', 'Medellín', 'Colombia'),
+('CTG', 'Cartagena', 'Colombia'),
+('LIM', 'Lima', 'Perú'),
+('CUZ', 'Cusco', 'Perú'),
+('MEX', 'Ciudad de México', 'México'),
+('CUN', 'Cancún', 'México'),
+('GDL', 'Guadalajara', 'México'),
+('PTY', 'Ciudad de Panamá', 'Panamá'),
+('GRU', 'São Paulo', 'Brasil'),
+('GIG', 'Río de Janeiro', 'Brasil'),
+('BSB', 'Brasilia', 'Brasil'),
+('UIO', 'Quito', 'Ecuador'),
+('GYE', 'Guayaquil', 'Ecuador'),
+('SJO', 'San José', 'Costa Rica'),
+('SAL', 'San Salvador', 'El Salvador'),
+('GUA', 'Ciudad de Guatemala', 'Guatemala'),
+('MGA', 'Managua', 'Nicaragua'),
+('SAP', 'San Pedro Sula', 'Honduras'),
+('ASU', 'Asunción', 'Paraguay'),
+('MVD', 'Montevideo', 'Uruguay'),
+('SJU', 'San Juan', 'Puerto Rico'),
+('POS', 'Puerto España', 'Trinidad y Tobago'),
+('KIN', 'Kingston', 'Jamaica'),
+('SDQ', 'Santo Domingo', 'República Dominicana'),
+('PUJ', 'Punta Cana', 'República Dominicana'),
+('HAV', 'La Habana', 'Cuba'),
+('NAS', 'Nassau', 'Bahamas');
