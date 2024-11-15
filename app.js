@@ -6,6 +6,8 @@ import cors from 'cors';
 
 import AvionesRouter from './src/avion/Router.js';
 import UbicacionRouter from './src/ubicacion/Router.js';
+import RutaRouter from './src/ruta/Router.js';
+import VueloRouter from './src/vuelo/Router.js';
 
 const app = express();
 const PORT = 4000;
@@ -20,6 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use('/api', AvionesRouter);
 app.use('/api', UbicacionRouter);
+app.use('/api', RutaRouter);
+app.use('/api', VueloRouter);
 
 
 app.listen(PORT, (error) => {

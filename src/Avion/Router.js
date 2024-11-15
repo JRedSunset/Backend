@@ -1,5 +1,5 @@
 import express from 'express';
-import Controller from './Controler.js';
+import Controller from './Controller.js';
 
 const AvionesRouter = express.Router();
 
